@@ -1,0 +1,97 @@
+/*
+By: Nicholas Qiao
+*/
+body {
+	background-image: -webkit-linear-gradient(top left, #FFFFFF 0%, #828282 100%);
+}
+
+#welcome {
+	text-align: center;
+	padding-top: 100px;
+	font-family: "Tatida_Rocking";
+	font-size: 50px;
+}
+.loginbox {
+    font-family:"Tatida_Rocking";
+    /* Size and position */
+    width: 340px;
+    margin: 60px auto 30px;
+    padding: 15px;
+    position: relative;
+ 
+    /* Styles */
+    background: white;
+    border-radius: 4px;
+    color: black;
+    box-shadow:
+        0 2px 2px rgba(68,68,68,0.2),        
+        0 1px 5px rgba(0,0,0,0.2),        
+        0 0 0 12px rgba(85,61,61,0.4); 
+}
+
+.loginbox h1 {
+	margin-top: -10px;
+	text-align: center;
+}
+
+.loginbox input[type=text],
+.loginbox input[type=password] {
+    /*Can change input box font here!*/
+    font-family: "Tatida_Rocking";
+    font-size: 25px;
+    padding: 10px;
+    position: relative;
+    width: 100%;
+ 
+    /* Styles */
+    border: 5px solid rgba(116, 177, 255,0.5);
+    background: white;
+    border-radius: 4px;
+    color: black;
+}
+
+#signupbutton,
+#submit {
+    font-family:"Tatida_Rocking";
+    text-decoration: none;
+    width: 100%;
+    height: 40px;
+    color: black;
+    font-size: 25px;
+    text-decoration: none;
+    line-height: 36px;
+    text-align: center;
+    background-color: #74b1ff;
+    border-radius: 4px;
+    margin-top: 10px;
+    font-weight: bold;
+    border: none;
+    display: block;
+    font-size: 30px;
+}
+
+#submit:hover {
+	cursor: pointer;
+}
+
+@font-face {
+    font-family:"Tatida_Rocking";
+    src:url("fonts/tatida/Tatida_Rocking.ttf") format("truetype");
+    font-weight:normal;
+    font-style:normal;
+}
+
+#footer {
+	padding-top: 150px;
+	text-align: center;
+	float: bottom;
+}
+
+label {
+	font-size: 25px;
+	font-weight: 900; 
+}
+
+#dfdf {
+	float: right;
+}
