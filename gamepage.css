@@ -1,0 +1,39 @@
+/*
+By: Nicholas Qiao
+*/
+body {
+	background-image: -webkit-linear-gradient(top left, #FFFFFF 0%, #828282 100%);
+}
+
+h1 {
+    text-align: center;
+    font-family: "Tatida_Rocking";
+    font-size: 70px;
+}
+
+@font-face {
+    font-family:"Tatida_Rocking";
+    src:url("fonts/tatida/Tatida_Rocking.ttf") format("truetype");
+    font-weight:normal;
+    font-style:normal;
+}
+
+#playfield {
+    width: 500px;
+    height: 500px;
+    background-color: blue;
+    display: inline-block;
+    margin-left: 220px;
+    
+}
+
+#chatbox {
+    width: 200px;
+    height: 500px;
+    background-color: pink;
+    display: inline-block;
+}   
+
+#wrapper {
+    text-align: center;
+}
