@@ -49,13 +49,17 @@ create table achievements
 drop table if exists active_reqs;
 create table active_reqs
 	(req_id int primary key auto_increment
-	,reqeuster int /* a uid */
-	,requested int /* reqeusted uid */
+	,requester int not null /* a uid */
+	,requested int not null /* reqeusted uid */
+	,req_time timestamp default current_timestamp()
     );
+/* make combinations of (requester,requested) unique */
+create unique index active_reqs_users on active_reqs (requester,requested);
+
 
 drop table if exists queue;
 create table queue
 	(entry_id int primary key auto_increment
-	,uid int /* uid of somebody currently in queue looking for a match */
+	,uid int not null /* uid of somebody currently in queue looking for a match */
 	,entered timestamp default current_timestamp
 	);
