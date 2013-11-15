@@ -17,42 +17,8 @@ body {
 }
 
 #container {
-	width: 1100px;
-	display: block;
-	margin-left: auto;
-	margin-right: auto;
-	padding-top: 150px;
-}
-
-#levelpick {
-	text-align: center;
-	padding-left: auto;
-	padding-right: auto;
-}
-
-td {
-	padding-right: 20px;
-	padding-left: 20px;
-}
-
-tr {
+	padding-top: 100px;
 	font-family: "Tatida_Rocking";
-	font-size: 40px;
-}
-
-#tie {
-	font-family: "october_crow";
-	display: inline-block;
-	color: red;
-	font-size: 70px;
-}
-
-#back {
-	font-weight: bold;
-	margin-top: 50px;
-	font-family: "Tatida_Rocking";
-	font-size: 30px;
-	border-style: solid;
-	width: 100px;
 	text-align: center;
+	font-size: 80px;
 }
