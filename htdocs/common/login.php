@@ -8,9 +8,13 @@ $password = $_REQUEST['password'];
 
 $uid = User::auth($username,$password);
 
+#Need to remove the following chunk of code when auth is working
 print($username);
 print($password);
 print($uid);
+session_start();
+$_SESSION['uid'] = 5;
+header ('Location: ../main.html');
 
 if ($uid < 0 || $uid == NULL)
 {
