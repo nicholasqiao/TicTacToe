@@ -18,10 +18,15 @@ h1 {
     font-style:normal;
 }
 
+table, th, td {
+    border: 1px solid black;
+    border-spacing: 0px;
+}
+
 #playfield {
-    width: 500px;
-    height: 500px;
-    background-color: blue;
+    width: 600px;
+    height: 600px;
+    background-color: #959595;
     display: inline-block;
     margin-left: 220px;
     
@@ -29,11 +34,15 @@ h1 {
 
 #chatbox {
     width: 200px;
-    height: 500px;
+    height: 600px;
     background-color: pink;
     display: inline-block;
 }   
 
 #wrapper {
     text-align: center;
+}
+
+#a{
+    
 }
