@@ -12,3 +12,4 @@ if ($uid < 0)
 	echo '<!DOCTYPE HTML><html><head><title>Username Taken</title></head><body>That username is taken. <a href="../signup.html">Go Back</a></body></html>';
 else 
 	echo '<!DOCTYPE HTML><html><head><title>Username Taken</title></head><body>Account successfully created!. <a href="../home.html">Go Back</a></body></html>';
+?>
