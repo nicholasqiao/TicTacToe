@@ -1,0 +1,22 @@
+body {
+	background-image: -webkit-linear-gradient(top left, #FFFFFF 0%, #828282 100%);
+}
+
+@font-face {
+    font-family:"Tatida_Rocking";
+    src:url("fonts/tatida/Tatida_Rocking.ttf") format("truetype");
+    font-weight:normal;
+    font-style:normal;
+}
+
+#error {
+	font-size: 50px;
+	font-family: "Tatida_Rocking";
+	text-align: center;
+	padding-top: 300px;
+}
+
+#red {
+	display: inline-block;
+	color: red;
+}
