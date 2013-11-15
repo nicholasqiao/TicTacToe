@@ -13,7 +13,7 @@
 
 date_default_timezone_set('America/New_York');
  
-define('ROOT','/home/mike/ttt');
+define('ROOT','C:/wamp/www/TTT');
 define('ERR', ROOT.'/error.log');
 
 function error($str) {
