@@ -21,3 +21,7 @@ echo '<br>';
 $uid_verify = User::auth("mikeyman","mypassword");
 echo $uid_verify;
 
+echo '<br>';
+
+$uid_verify_bad = User::auth("mikeyman","notmypassword");
+echo $uid_verify_bad;

@@ -111,7 +111,7 @@ class User
 			if (User::execute($stmt, "User::auth()")) {
 				$row = $stmt->fetch();
 
-				if (is_null($row))
+				if (is_null($row[0]))
 					return -1;
 				else
 					return $row[0];
