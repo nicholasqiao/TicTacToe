@@ -13,15 +13,18 @@ echo '<!DOCTYPE HTML>
 
 // User create/auth functions
 
-$uid = User::newUser("mikeyman","mypassword");
-echo $uid;
+$user = User::newUser("mikeg","mypassword");
+var_dump($user);
 
 echo '<br>';
 
-$uid_verify = User::auth("mikeyman","mypassword");
-echo $uid_verify;
+$user2 = User::auth("mikeg","mypassword");
+var_dump($user2);
+echo $user2->uid();
 
 echo '<br>';
 
-$uid_verify_bad = User::auth("mikeyman","notmypassword");
-echo $uid_verify_bad;
+$user3 = User::auth("mikeg","notmypassword");
+var_dump($user3);
+
+var_dump($user2->getStats());

@@ -14,9 +14,10 @@ drop table if exists users;
 create table users
 	(uid int primary key auto_increment
 	,username varchar(200) not null /* email serves as username */
-    ,pass varchar(40) not null /* php function sha1() returns 40-character hash */
-    ,win int not null default 0
+        ,pass varchar(40) not null /* php function sha1() returns 40-character hash */
+	,win int not null default 0
 	,loss int not null default 0
+	,tie int not null default 0
     ,created timestamp not null default current_timestamp
 	);
 

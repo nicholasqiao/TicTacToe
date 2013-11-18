@@ -1,7 +1,7 @@
 <?php 
 
 require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
-require_once(ROOT . '/php/inc/base.php');
+require_once(ROOT . '/php/db/Model.php');
 
 class Game
 {
