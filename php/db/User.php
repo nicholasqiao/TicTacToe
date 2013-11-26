@@ -76,9 +76,6 @@ class User
 			return null;
 		}
 	}
-		
-
-
 
 	/*
 	 * Creates a new user and returns an object with the new user's UID, or -1 for error.
@@ -169,19 +166,53 @@ class User
 			if (Model::execute($stmt, "User::auth()")) {
 				$row = $stmt->fetch();
 
-				if (is_null($row[0]))
+				if (is_null($row[0])) {
+					throw new NotFoundException();
 					return null;
+				}
 				else
 					return new User($row[0]);
 			}
-			else
+			else {
+				throw new NotFoundException();	
 				return null;
+			}
 		}
 		else {
 			error("Database error in User::auth()");
+			throw new NotFoundException();	
 			return null;
 		}
 		
+	}
+
+	/*
+	 * The user won,lost,tied a game 
+ 	 * Returns true for successful update
+	 */
+	public function gameResult($str) {
+		if ( strcmp($str,"win") && strcmp($str,"loss") && strcmp($str,"tie") ) {
+			error("Invalid game result specified: " . $str);
+			return false;
+		}
+
+		$sql =  "update users
+		      set " . $str . " = " . $str . "+1 
+		      where uid = :uid";
+
+		if ($stmt = $GLOBALS['db']->prepare($sql)) {
+			$stmt -> bindParam(":uid", $this->uid, PDO::PARAM_INT);
+
+			if (!Model::execute($stmt, "wonGame()")) {
+					return false;
+			}
+			else
+				return true;
+		}
+		else {
+			error("Database error in wonGame()");
+			return false;
+		}
 	}
 
 	/*  Initialize the user's email
@@ -191,7 +222,7 @@ class User
 	private function queryEmail() {
 		$sql = "select username from users
 			where uid = :uid";
-		
+	 	
 		if ($stmt = $GLOBALS['db']->prepare($sql)) {
 			$stmt -> bindParam(":uid", $this->uid, PDO::PARAM_INT);
 
@@ -212,7 +243,70 @@ class User
 		}
 	}
 
-			
+	/* 
+	 * Called when gameResult() is called 
+	 * Inserts achievements 
+	 */
+	private function achievementUpdate() {
+		$stats = getStats();
 
+		if (stats['win'] >= 3)
+			newAchievement(2,"Still a noob - won three games");
+		if ( (double)stats['win']/stats['loss'] >= 2.00 )
+			newAchievement(3," win loss ratio > 2");
+		if ( (double)stats['win']/stats['loss'] <= 0.10 )
+			newAchievement(4, " ratio < 0.1");
+		if ( stats['tie'] >= 100 )
+			newAchievement(5, " tie 100 games");
+	}
+
+	/*
+	 * Helper function for making achievements
+	 */
+	private function newAchievement($achievement_id, $achievement_text) {
+		$sql = "insert into achievements
+		 	(uid
+			,achievement_id
+			,txt)
+			values
+			(:uid
+			,:aid
+			,:txt)";
+
+		if ($stmt = $GLOBALS['db']->prepare($sql)) {
+			$stmt -> bindParam(":uid", $this->uid, PDO::PARAM_INT);
+			$stmt -> bindParam(":aid", $achievement_id, PDO::PARAM_INT);
+			$stmt -> bindParam(":txt", $achievement_text, PDO::PARAM_STR);
+
+			if (Model::execute($stmt, "newAchievement()")) {
+				$row = $stmt->fetch();
+
+				if (is_null($row[0]))
+					return null;
+				else
+					return $row[0];
+			}
+			else
+				return null;
+		}
+		else {
+			error("Database error in newAchievement()");
+			return null;
+		}
+
+		
+	}
+
+	/* 
+	 * Achievements reference table
+	 *
+	 * achievement ID  |   text 
+         * -------------------------
+         *             1   | "You made an account"
+	 *             2   | "You won 3 games"
+	 * 	       3   | "Your win loss ratio climbed above 2.00"
+	 *             4   | "You suck - Your win loss ratio dipped below .10"
+	 *             5   | "Tie Master - You have tied in 100 games"
+	 */
 }
 

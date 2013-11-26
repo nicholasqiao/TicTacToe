@@ -194,6 +194,28 @@ class Game
 		}
 	}
 
+	/* 
+	 * Return integer size of queue or -1 for error
+	 */
+	public static function sizeofQ() {
+		$sql = "select count(*) from queue";
+
+		if ($stmt = $GLOBALS['db']->prepare($sql)) {
+			if (Game::execute($stmt,"sizeofQ()")) {
+				$row = $stmt->fetch(); 
+				return $row[0];
+			}
+			
+			else 
+				return -1;
+		}
+
+		else {
+			error("Database error in sizeofQ()");
+			return -1;	
+		}
+	}
+
 	/*
 	 * Insert a game request from one user to another. Returns false for error. 
 	 */
@@ -300,11 +322,6 @@ class Game
 		}
 		else return false;
 	}
-
-
-		
-
-
 }
 
 ?>

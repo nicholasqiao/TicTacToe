@@ -13,7 +13,11 @@ echo '<!DOCTYPE HTML>
 
 // User create/auth functions
 
+try {
 $user = User::newUser("mikeg","mypassword");
+}
+catch (NotFoundException $e) { }
+
 var_dump($user);
 
 echo '<br>';
@@ -24,7 +28,23 @@ echo $user2->uid();
 
 echo '<br>';
 
-$user3 = User::auth("mikeg","notmypassword");
+$result = $user2->gameResult('win');
+$result = $result && $user2->gameResult('win');
+$result = $result && $user2->gameResult('loss');
+$result = $result && $user2->gameResult('loss');
+$result = $result && $user2->gameResult('tie');
+echo $result;
+
+$str = "win";
+echo strcmp($str,"win");
+
+if (strcmp($str,"win")) echo "hi";
+
+try {
+	$user3 = User::auth("mikeg","notmypassword");
+}
+catch (NotFoundException $e) { }
+
 var_dump($user3);
 
 var_dump($user2->getStats());

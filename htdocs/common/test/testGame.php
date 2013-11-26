@@ -53,6 +53,7 @@ echo Game::removeRequest(1,2);
 echo Game::removeRequest(3,2);
 */
 
+echo Game::sizeofQ();
 
 
 
