@@ -14,7 +14,7 @@ echo '<!DOCTYPE HTML>
 // User create/auth functions
 
 try {
-$user = User::newUser("mikeg","mypassword");
+	$user = User::newUser("mikeg","mypassword");
 }
 catch (NotFoundException $e) { }
 

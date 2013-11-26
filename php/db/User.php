@@ -250,13 +250,13 @@ class User
 	private function achievementUpdate() {
 		$stats = getStats();
 
-		if (stats['win'] >= 3)
+		if ($stats['win'] >= 3)
 			newAchievement(2,"Still a noob - won three games");
-		if ( (double)stats['win']/stats['loss'] >= 2.00 )
+		if ( (double) $stats['win']/ $stats['loss'] >= 2.00 )
 			newAchievement(3," win loss ratio > 2");
-		if ( (double)stats['win']/stats['loss'] <= 0.10 )
+		if ( (double) $stats['win']/ $stats['loss'] <= 0.10 )
 			newAchievement(4, " ratio < 0.1");
-		if ( stats['tie'] >= 100 )
+		if ( $stats['tie'] >= 100 )
 			newAchievement(5, " tie 100 games");
 	}
 
