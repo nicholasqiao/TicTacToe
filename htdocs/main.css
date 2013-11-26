@@ -24,8 +24,8 @@ body {
 .option {
     padding-left: 50px;
     padding-right: 50px;
-    height: 200px;
-    width: 200px;
+    height: 250px;
+    width: 300px;
     display: inline-block
 }
 
@@ -37,4 +37,5 @@ body {
 h3{
     font-family: "Tatida_Rocking";
     font-size: 30px;
+    text-align: center;
 }

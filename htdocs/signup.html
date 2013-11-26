@@ -11,12 +11,17 @@ By: Nicholas Qiao
 
 <form class="loginbox" action="common/signup.php" method="POST">
 	<div class="signupfield">
-		<label for="firstname" id="dfdf">Username: </label></br>
+		<label for="firstname" id="username">Username: </label></br>
 		<input name="username" type="text" class="signupfield" maxlength="26" id="dfdf">
 	</div>
 
 	<div class="signupfield">
-		<label for="firstname">Password: </label></br>
+		<label for="firstname" id="password">Password: </label></br>
+		<input name="password" type="password" class="signupfield" maxlength="26">
+	</div>
+
+	<div class="signupfield">
+		<label for="firstname" id="confirmpassword">Confim Password: </label></br>
 		<input name="password" type="password" class="signupfield" maxlength="26">
 	</div>
 	<input type="submit" value="Register" id="submit">
