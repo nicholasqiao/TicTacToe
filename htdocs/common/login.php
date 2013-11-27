@@ -6,8 +6,6 @@ require_once ROOT . '/php/db/User.php';
 $username = $_REQUEST['login'];
 $password = $_REQUEST['password'];
 
-
-
 try {
 	$user = User::auth($username,$password);
 }
@@ -19,7 +17,6 @@ catch (NotFoundException $e) {
 
 session_start();
 $_SESSION['uid'] = $user->uid();
-header ('Location: ../main.html');
-
+header ('Location: /main.html');
 
 ?>

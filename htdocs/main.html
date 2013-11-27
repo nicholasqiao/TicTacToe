@@ -1,10 +1,20 @@
+<?php session_start(); ?>
+<?php require_once '../config.php'; ?>
+<?php require_once ROOT . '/php/db/User.php'; ?>
+<?php if(!isset($_SESSION['uid'])): ?>
+<?php   header('Location: /index.html'); ?>
+<?php else: ?>
+<?php   try { $user = new User($_SESSION['uid']); } catch (NotFoundException $e) { unset($_SESSION['uid']); header('Location: /index.html'); exit(0); } ?>
+<?php   $email = $user->getEmail(); ?>
+<?php endif; ?>
+
 <html>
 <head>
 <link rel="stylesheet" type="text/css" href="main.css">
 <title>Tic Tac Toe Main</title>
 </head>
 <body>
-<h1 id="welcome">Welcome to Tic Tac Toe</h1>
+<h1 id="welcome">Welcome Back, <?php echo $email; ?> </h1>
 <div id="wrapper">
 	<div class="option">
 		<a href="levelpick.html">

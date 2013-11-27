@@ -72,7 +72,7 @@ class Game
 	 */
 	public static function getState($gid) {
 
-		$sql = "select game_state 
+		$sql = "select game_state, turn, winner
 			from current_games
 			where gid = :gid";
 
@@ -83,8 +83,10 @@ class Game
 				return null;
 	
 			else {
-				$row = $stmt->fetch();
-				return $row['game_state'];
+				if ($row = $stmt->fetch())
+					return $row;
+				else
+					return null;
 			}
 		}
 		else  {
@@ -97,14 +99,15 @@ class Game
 	 * Update the game state to $state. Returns true for successful
 	 * update or false for database error.
 	 */ 
-	public static function updateState($gid, $state) {
+	public static function updateState($gid, $state, $turn) {
 		$sql = "update current_games
-			set game_state = :state
+			set game_state=:state,turn=:turn
 			where gid = :gid";
 
 		if ($stmt = $GLOBALS['db']->prepare($sql)) {
 			$stmt -> bindParam("gid",$gid, PDO::PARAM_INT);
-			$stmt -> bindParam("state",$state, PDO::PARAM_STR);			
+			$stmt -> bindParam("state",$state, PDO::PARAM_STR);	
+			$stmt -> bindParam("turn",$turn, PDO::PARAM_STR);			
 			if (Game::execute($stmt,"updateState()")) {
 				return true;
 			}
@@ -115,6 +118,59 @@ class Game
 			return false;
 		}
 				
+	}
+
+	/*
+	 * Finish the game. Returns true for successful
+	 * update or false for database error. $winUid = 0 indicates tie
+	 */ 
+	public static function finish($gid, $winUid) {
+		$sql = "update current_games
+			set winner=:uid
+			where gid = :gid";
+
+		if ($stmt = $GLOBALS['db']->prepare($sql)) {
+			$stmt -> bindParam("gid",$gid, PDO::PARAM_INT);
+			$stmt -> bindParam("uid",$winUid, PDO::PARAM_INT);	
+			if (Game::execute($stmt,"Game::finish()")) {
+				return true;
+			}
+			else return false;
+		}
+		else {
+			error("Database error in Game::finish()");
+			return false;
+		}
+				
+	}
+
+	/* 
+	 * Return game info. Currently just returns array like
+	 *
+	 * $array['uid_one'] => 1
+	 * $array['uid_two'] => 4
+ 	 * 
+	 * but can be expanded to include more info if necessary
+	 */
+	public static function info($gid) {
+		$sql = "select uid_one, uid_two
+			from current_games
+			where gid = :gid";
+
+		if ($stmt = $GLOBALS['db']->prepare($sql)) {
+			$stmt -> bindParam("gid",$gid, PDO::PARAM_INT);
+			if (Game::execute($stmt,"info()")) {	
+				if ($row = $stmt->fetch())
+					return $row;
+				else
+					return null;
+			}
+			else return null;
+		}
+		else {
+			error("Database error in info()");
+			return null;
+		}
 	}
 
 
@@ -143,8 +199,32 @@ class Game
 	 * 	['uid'] => 23
 	 * 	['email'] => joe@email.net
 	 */
-//	public static function getLeaderboard() {
-//	}
+	public static function getLeaderboard() {
+		$sql = 'select 
+				username
+				,win 
+				,loss 
+				,coalesce( (win/loss), 0) "ratio" 
+			from users
+		        order by ratio desc
+			limit 10';
+
+
+		if ($stmt = $GLOBALS['db']->prepare($sql)) {
+			$stmt->bindParam("uid",$uid, PDO::PARAM_INT);
+			if (Game::execute($stmt,"getLeaderboard()")) 
+				return true;
+			
+			else 
+				return false;
+		}
+		else {
+			error("Database error in getLeaderboard()");
+			return false;
+		}
+
+		
+	}
 
 	/*
 	 * Put a user in the queue. Returns false for error.
@@ -301,7 +381,6 @@ class Game
 		}
 		else return null;
 	}
-
 
 	/*
 	 * Remove a given request. Return false for error.

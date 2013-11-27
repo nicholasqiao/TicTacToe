@@ -13,13 +13,15 @@
 
 date_default_timezone_set('America/New_York');
  
-define('ROOT','C:/wamp/www/TTT');
+define('ROOT','/home/mike/ttt');
 define('ERR', ROOT.'/error.log');
 
 function error($str) {
 	$err = "[" . date("r") . "]: " . $str . "\n";
 	error_log($err,3,ERR);
 } 
+
+class NotFoundException extends Exception {}
 
 
 ?>

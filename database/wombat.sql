@@ -28,6 +28,8 @@ create table current_games
     ,uid_one int
     ,uid_two int
     ,game_state varchar(100)
+	,turn int
+	,winner int default null
     /* ,game_status varchar(10) /* maybe something like PROG for in progress, OVER for over */
     );
 
@@ -43,10 +45,15 @@ create table friendlist
 
 drop table if exists achievements;
 create table achievements
-	(entry_id int primary key auto_increment
-	,uid int
+	(uid int
+	,achievement_id int
 	,txt varchar(500) /* description of the achievment */
+	,created timestamp default current_timestamp()
 	);
+/* combinations of achievement_id and uid are unique */
+create unique index active_reqs_users on active_reqs (uid,achievement_id);
+
+
 drop table if exists active_reqs;
 create table active_reqs
 	(req_id int primary key auto_increment

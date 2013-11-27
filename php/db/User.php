@@ -1,6 +1,5 @@
 <?php 
 
-class NotFoundException extends Exception {}
 
 require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
 require_once(ROOT . '/php/db/Model.php');
@@ -295,6 +294,60 @@ class User
 		}
 
 		
+	}
+
+	public static function recordWin($uid) {
+		$sql = 'update users set win=win+1 where uid=:uid';
+
+		if ($stmt = $GLOBALS['db']->prepare($sql)) {
+			$stmt -> bindParam(":uid", $uid, PDO::PARAM_INT);
+
+			if (Model::execute($stmt, "recordWin()")) {
+				return true;
+			}
+			else
+				return false;
+		}
+		else {
+			error("Database error in recordWin()");
+			return false;
+		}
+	}
+
+	public static function recordLoss($uid) {
+		$sql = 'update users set loss=loss+1 where uid=:uid';
+
+		if ($stmt = $GLOBALS['db']->prepare($sql)) {
+			$stmt -> bindParam(":uid", $uid, PDO::PARAM_INT);
+
+			if (Model::execute($stmt, "recordLoss()")) {
+				return true;
+			}
+			else
+				return false;
+		}
+		else {
+			error("Database error in recordLoss()");
+			return false;
+		}
+	}
+
+	public static function recordTie($uid) {
+	$sql = 'update users set tie=tie+1 where uid=:uid';
+
+		if ($stmt = $GLOBALS['db']->prepare($sql)) {
+			$stmt -> bindParam(":uid", $uid, PDO::PARAM_INT);
+
+			if (Model::execute($stmt, "recordTie()")) {
+				return true;
+			}
+			else
+				return false;
+		}
+		else {
+			error("Database error in recordTie()");
+			return false;
+		}
 	}
 
 	/* 
