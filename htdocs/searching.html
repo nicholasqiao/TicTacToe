@@ -2,6 +2,38 @@
 <head>
 <link rel="stylesheet" type="text/css" href="searching.css">
 <title>Searching For Game</title>
+<script>
+    function isGameFound() {
+        var xmlhttp;
+        var isFound = false;
+        if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+            xmlhttp = new XMLHttpRequest();
+        }
+        else {// code for IE6, IE5
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                var strResult = xmlhttp.responseText;
+                document.write(strResult);
+            }
+        }
+        xmlhttp.open("GET", "./common/getSearchResult.php", true);
+        xmlhttp.send();
+
+        if (isFound)
+        {
+            location.href("./home.html");
+        }
+    }
+
+    window.setInterval(
+        function () {
+            isGameFound();
+        }
+        , 1000);
+
+</script>
 </head>
 <body>
 <div id="container">

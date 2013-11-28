@@ -2,6 +2,33 @@
 <head>
 	<link rel="stylesheet" type="text/css" href="gamepage.css">
 	<title>Game Page</title>
+    <script>
+        function getGameState() {
+            var xmlhttp;
+            var isFound = false;
+            if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+                xmlhttp = new XMLHttpRequest();
+            }
+            else {// code for IE6, IE5
+                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                    var strResult = xmlhttp.responseText;
+                    document.write(strResult);
+                }
+            }
+            xmlhttp.open("GET", "./common/getBoard.php", true);
+            xmlhttp.send();
+        }
+
+        window.setInterval(
+            function () {
+                getGameState();
+            }
+            , 1000);
+
+</script>
 </head>
 <body>
 	<h1>Tic Tac Toe</h1>

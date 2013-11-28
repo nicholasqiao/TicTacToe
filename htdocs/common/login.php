@@ -10,13 +10,13 @@ try {
 	$user = User::auth($username,$password);
 }
 catch (NotFoundException $e) {
-	echo '<!DOCTYPE HTML><html><head><title>Username Taken</title></head><body>Invalid login information! <a href="../home.html">Go Back</a></body></html>';
+	echo '<!DOCTYPE HTML><html><head><title>Username Taken</title></head><body>Invalid login information! <a href="../index.html">Go Back</a></body></html>';
 	exit(0);
 }
 
 
 session_start();
 $_SESSION['uid'] = $user->uid();
-header ('Location: /main.html');
+header ('Location: ../main.html');
 
 ?>
