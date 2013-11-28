@@ -6,14 +6,33 @@
     session_start();
     $uid = $_SESSION['uid'];
     
-    $inq = Game::enQ($uid);
+    //$inq = Game::enQ($uid);
+    $qSize = Game::sizeofQ();
     
-    if ($inq == True)
+    $newUid = Game::deQ();
+    echo ($qSize);
+    echo ($newUid);
+    /*
+    if ($qSize == 0)
     {
         header('Location: ../searching.html');
     }
     else
     {
-        echo '<!DOCTYPE HTML><html><head><title>Error</title></head><body>An error has occured, you are not in the queue <a href="../main.html">Go Back</a></body></html>';
+        $firstPlayer = Game::deQ();
+        $newGameId = Game::newGame($uid, $firstPlayer, "000000000");
+        
+        if ($newGameId == -1)
+        {
+            echo '<!DOCTYPE HTML><html><head><title>Error</title></head><body>An error has occured, you are not in the queue <a href="../main.html">Go Back</a></body></html>';
+        }
+        else
+        {
+            $_SESSION['gid'] = $newGameId;
+        }
+        Game::deQ();//Removes this players in the Q
+	
+	header('Location: ../home.html');
     }
+    */
 ?>
