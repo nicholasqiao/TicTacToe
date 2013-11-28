@@ -13,6 +13,13 @@
     $inq = Game::enQ($uid);
     $qSize = Game::sizeofQ();
 
+    //$inq = Game::enQ($uid);
+    $qSize = Game::sizeofQ();
+    
+    $newUid = Game::deQ();
+    echo ($qSize);
+    echo ($newUid);
+
     if ($qSize == 0)
     {
         header('Location: ../searching.html');
@@ -32,9 +39,7 @@
             $_SESSION['gid'] = $newGameId;
         }
         Game::deQ();//Removes this players in the Q
-	
-	    header('Location: ../home.html');
-        
+	header('Location: ../home.html');
     }
     */
 ?>
