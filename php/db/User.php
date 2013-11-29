@@ -350,6 +350,94 @@ class User
 		}
 	}
 
+	/*
+	 * Insert a game request from one user to another. Returns false for error. 
+	 */
+	public static function gameRequest($to) {
+		$sql = 'insert into active_reqs
+			(requester
+			,requested)
+			
+			values
+			(:from
+			,:to
+			)
+
+			on duplicate key
+			update req_time = current_timestamp();';
+			/* This last line just updates the req_time field
+			   if someone makes the same request twice */
+			
+
+		if ($stmt = $GLOBALS['db']->prepare($sql)) {
+			$stmt->bindParam('from',$this->uid,PDO::PARAM_INT);
+			$stmt->bindParam('to',$to,PDO::PARAM_INT);
+			
+			if (Model::execute($stmt,"gameRequest()")) 
+				return true;
+			
+			else 
+				return false;
+		}
+		else {
+			error("Database error in gameRequest()");
+			return false;
+		}
+	}
+
+	/* 
+	 * Return an array of uids for active requests that are requesting given UID.
+	 * Array keyed by 0, 1, 2, ... etc
+	 */
+	public function getRequests() {
+		$sql = 'select a.requester
+	  		      ,u.username
+	  		from active_reqs a 
+			join users u on a.requester = u.uid
+			where a.requested = 3;';
+
+		if ($stmt = $GLOBALS['db']->prepare($sql)) {
+			$stmt->bindParam('uid',$this->uid,PDO::PARAM_INT);
+			
+			if (Model::execute($stmt,"getRequests()")){
+				if ($result = $stmt->fetchAll())
+					return $result;
+				else
+					return null;
+			}
+			else return null;
+		}
+		else return null;
+	}
+
+	/* 
+	 * returns gid or 0 for error
+	 *
+	 * uses 'limit 1' - may cause issues if the player manages to get 
+	 * into more than one game at a time
+	 */
+	public static function isInGame($uid) {
+		$sql = 'select gid from current_games
+			where    (uid_one = :uid
+			   or	  uid_two = :uid)
+			  and winner is null
+			limit 1';
+
+		if ($stmt = $GLOBALS['db']->prepare($sql)) {
+			$stmt->bindParam('uid',$uid,PDO::PARAM_INT);
+			
+			if (Model::execute($stmt,"getRequests()")){
+				if ($row = $stmt->fetch())
+					return $row['gid'];
+				else
+					return 0;
+			}
+			else return 0;
+		}
+		else return 0;
+	}
+
+
 	/* 
 	 * Achievements reference table
 	 *

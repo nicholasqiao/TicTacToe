@@ -31,11 +31,13 @@ class Game
 		$sql = "insert into current_games
 				(uid_one
 				,uid_two
-				,game_state)
+				,game_state
+				,turn)
 			values
 				(:uid1
 				,:uid2
-				,:state)";
+				,:state
+				,:uid1)";
 		
 		if ($stmt = $GLOBALS['db']->prepare($sql)) {
 			$stmt -> bindParam(":uid1", $uid1, PDO::PARAM_INT);
@@ -262,7 +264,24 @@ class Game
 		if ($stmt = $GLOBALS['db']->prepare($sql)) {
 			if (Game::execute($stmt,"deQ()")) {
 				$row = $stmt->fetch(); 
-				return $row['uid'];
+				$uid = $row['uid'];
+			}
+			
+			else 
+				return false;
+		}
+		else {
+			error("Database error in deQ()");
+			return false;	
+		}
+
+		$sql = "delete from queue
+			where uid = :uid";
+
+		if ($stmt = $GLOBALS['db']->prepare($sql)) {
+			$stmt->bindParam("uid",$uid,PDO::PARAM_INT);
+			if (Game::execute($stmt,"deQ()")) {
+				return $uid;
 			}
 			
 			else 
@@ -401,6 +420,8 @@ class Game
 		}
 		else return false;
 	}
+
+	
 }
 
 ?>
