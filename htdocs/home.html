@@ -3,6 +3,7 @@
 	<link rel="stylesheet" type="text/css" href="gamepage.css">
 	<title>Game Page</title>
     <script>
+        var curGameState;
         function getGameState() {
             var xmlhttp;
             var isFound = false;
@@ -15,51 +16,49 @@
             xmlhttp.onreadystatechange = function () {
                 if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
                     var strResult = xmlhttp.responseText;
-                    for (var i = 0; i < 9; i++)
-                    {
-                        var image;
-                        if (strResult[i] == "X")
-                        {
-                            image = "<a href='#'><img src='./i/x.png'/></a>";
-                        }
-                        else if (strResult[i] == "O")
-                        {
-                            image = "<a href='#'><img src='./i/o.png'/></a>";
-                        }
-
-                        if (image != null)
-                        {
-                            switch (i)
-                            {
-                                case 0:
-                                    document.getElementById("a").innerHTML = image;
-                                    break;
-                                case 1:
-                                    document.getElementById("b").innerHTML = image;
-                                    break;
-                                case 2:
-                                    document.getElementById("c").innerHTML = image;
-                                    break;
-                                case 3:
-                                    document.getElementById("d").innerHTML = image;
-                                    break;
-                                case 4:
-                                    document.getElementById("e").innerHTML = image;
-                                    break;
-                                case 5:
-                                    document.getElementById("f").innerHTML = image;
-                                    break;
-                                case 6:
-                                    document.getElementById("g").innerHTML = image;
-                                    break;
-                                case 7:
-                                    document.getElementById("h").innerHTML = image;
-                                    break;
-                                case 8:
-                                    document.getElementById("i").innerHTML = image;
-                                    break;
+                    if (strResult != curGameState) {
+                        for (var i = 0; i < 9; i++) {
+                            var image;
+                            if (strResult[i] == "X") {
+                                image = "<a href='#'><img src='./i/x.png'/></a>";
                             }
+                            else if (strResult[i] == "O") {
+                                image = "<a href='#'><img src='./i/o.png'/></a>";
+                            }
+                            else {
+                                image = "";
+                            }
+                                switch (i) {
+                                    case 0:
+                                        document.getElementById("a").innerHTML = image;
+                                        break;
+                                    case 1:
+                                        document.getElementById("b").innerHTML = image;
+                                        break;
+                                    case 2:
+                                        document.getElementById("c").innerHTML = image;
+                                        break;
+                                    case 3:
+                                        document.getElementById("d").innerHTML = image;
+                                        break;
+                                    case 4:
+                                        document.getElementById("e").innerHTML = image;
+                                        break;
+                                    case 5:
+                                        document.getElementById("f").innerHTML = image;
+                                        break;
+                                    case 6:
+                                        document.getElementById("g").innerHTML = image;
+                                        break;
+                                    case 7:
+                                        document.getElementById("h").innerHTML = image;
+                                        break;
+                                    case 8:
+                                        document.getElementById("i").innerHTML = image;
+                                        break;
+                                }
                         }
+                        curGameState = strResult;
                     }
                 }
             }
