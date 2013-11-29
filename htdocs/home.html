@@ -15,7 +15,15 @@
             xmlhttp.onreadystatechange = function () {
                 if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
                     var strResult = xmlhttp.responseText;
-                    document.write(strResult);
+                    var a = strResult[0];
+                    var b = strResult[1];
+                    var c = strResult[2];
+                    var d = strResult[3];
+                    var e = strResult[4];
+                    var f = strResult[5];
+                    var g = strResult[6];
+                    var h = strResult[7];
+                    var i = strResult[8];
                 }
             }
             xmlhttp.open("GET", "./common/getBoard.php", true);

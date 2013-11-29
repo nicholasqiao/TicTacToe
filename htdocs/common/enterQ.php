@@ -6,7 +6,7 @@
     session_start();
     $uid = $_SESSION['uid'];
     
-    $_SESSION['gid'] = 1;
+    $_SESSION['gid'] = 7;
     header('Location: ../home.html');
     
     /*
