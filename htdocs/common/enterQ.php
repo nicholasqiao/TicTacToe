@@ -5,29 +5,18 @@
 
     session_start();
     $uid = $_SESSION['uid'];
-    
-    $_SESSION['gid'] = 7;
-    header('Location: ../home.html');
-    
-    /*
+   
     $inq = Game::enQ($uid);
     $qSize = Game::sizeofQ();
-
-    //$inq = Game::enQ($uid);
-    $qSize = Game::sizeofQ();
     
-    $newUid = Game::deQ();
-    echo ($qSize);
-    echo ($newUid);
-
-    if ($qSize == 0)
+    if ($qSize == 1)
     {
         header('Location: ../searching.html');
     }
     else
     {
         $firstPlayer = Game::deQ();
-        $gameState = "000000000";
+        $gameState = "EEEEEEEEE";
         $newGameId = Game::newGame($uid, $firstPlayer, $gameState);
         
         if ($newGameId == -1)
@@ -38,8 +27,6 @@
         {
             $_SESSION['gid'] = $newGameId;
         }
-        Game::deQ();//Removes this players in the Q
-	header('Location: ../home.html');
+	    header('Location: ../home.html');
     }
-    */
 ?>
