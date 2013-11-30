@@ -40,13 +40,15 @@ function getBoard() {
 
 				if (winner!=null) {
 					window.clearInterval(timer);
-					
+
+				//	var playAgainStr = '<h3><a href="/common/playAgain.php?gid=' + gid + '">Play Again</a></h3>';
+					var playAgainStr = ' ';	
 					if (winner == uid)
-						$("#turnIndicator").html("<h3>You won!</h3>");
+						$("#turnIndicator").html("<h3>You won!</h3>" + playAgainStr);
 					else if (winner == 0)
-						$("#turnIndicator").html("<h3>Cat's game</h3>");
+						$("#turnIndicator").html("<h3>Cat's game</h3>" + playAgainStr);
 					else
-						$("#turnIndicator").html("<h3>You lost</h3><img src='/i/badman.jpg'>");
+						$("#turnIndicator").html("<h3>You lost</h3><img src='/i/badman.jpg'>" + playAgainStr);
 					drawBoard(board,false);
 					return;
 			
