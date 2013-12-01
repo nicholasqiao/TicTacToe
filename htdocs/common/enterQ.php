@@ -27,6 +27,7 @@
         {
             $_SESSION['gid'] = $newGameId;
         }
-	    header('Location: ../home.html');
+        Game::deQ();
+	    header('Location: ../play.php?gid=' . $newGameId);
     }
 ?>
