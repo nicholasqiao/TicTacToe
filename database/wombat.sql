@@ -68,6 +68,6 @@ create unique index active_reqs_users on active_reqs (requester,requested);
 drop table if exists queue;
 create table queue
 	(entry_id int primary key auto_increment
-	,uid int not null /* uid of somebody currently in queue looking for a match */
+	,uid int not null unique /* uid of somebody currently in queue looking for a match */
 	,entered timestamp default current_timestamp
 	);
