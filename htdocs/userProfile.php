@@ -54,6 +54,8 @@ catch (NotFoundException $e) {
 
 $email = $user->getEmail();
 $stats = $user->getStats(); // stats is an array
+$gameRequests = $user->getRequests();
+$formattedReq = JSON_encode($gameRequests);
 //$achievements = $user->getAchievements(); // achievements functionality to be implemented
 
 
@@ -80,5 +82,15 @@ echo '
 </tr>
 <tr>	<td>Ties:</td><td>' . $stats["tie"] . '</td>
 </tr>
-</table>';
+</table>
+';
+
+echo '
+<table>
+<tr> <td colspan="2">Game Requests</td> </tr>
+<tr>
+	<td>Requests:</td><td>' . $formattedReq . '</td>
+</tr>
+</table>
+';
 

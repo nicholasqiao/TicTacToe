@@ -136,7 +136,7 @@ class User
 		if ($stmt2 = $GLOBALS['db']->prepare($sql2)) {
 			if (Model::execute($stmt2,"newUser() last_insert_id")) {
 				$row = $stmt2->fetch();
-				User::addAchievement($uid,1,"You made a new account!");
+				User::addAchievement($row[0],1,"You made a new account!");
 				return new User($row[0]);
 			}
 			else 
@@ -357,7 +357,7 @@ class User
 	/*
 	 * Insert a game request from one user to another. Returns false for error. 
 	 */
-	public static function gameRequest($to) {
+	public function gameRequest($to) {
 		$sql = 'insert into active_reqs
 			(requester
 			,requested)
@@ -398,17 +398,16 @@ class User
 	  		      ,u.username
 	  		from active_reqs a 
 			join users u on a.requester = u.uid
-			where a.requested = 3;';
-
-		if ($stmt = $GLOBALS['db']->prepare($sql)) {
+			where a.requested = ' . $this->uid .';';
+            
+            if ($stmt = $GLOBALS['db']->prepare($sql)) {
 			$stmt->bindParam('uid',$this->uid,PDO::PARAM_INT);
-			
-			if (Model::execute($stmt,"getRequests()")){
+            if (Model::execute($stmt,"getRequests()")){
 				if ($result = $stmt->fetchAll())
 					return $result;
 				else
 					return null;
-			}
+            }
 			else return null;
 		}
 		else return null;
