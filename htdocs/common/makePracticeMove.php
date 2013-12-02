@@ -34,6 +34,10 @@ if (is_null($board))
 
 $result = PracticeGame::makeMove($board,$row,$col,$diff);
 
+// this value will cause the script to sleep for x nanoseconds,
+// simulating the AI "thinking"
+time_nanosleep(0, 500000000);
+
 if (is_null($result))
 	echo 'error';
 else

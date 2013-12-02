@@ -40,6 +40,14 @@ class PracticeGame {
 	// $result['board'] = array of gamebaord
 	// $result['status'] is {'userWin','computerWin','tie'}
 	static function makeMove($board, $row, $col, $diff) {
+		//block for if computer's turn is first.
+		if ($row == -1 and $col == -1){
+			$result = array(2);
+			$result['board'] = computerMove($board);
+			$result['status'] = 'continue';
+			return $result;
+		}
+
 		// validate row, col
 		if ($row < 0 || $row > 2)
 			return null;

@@ -8,19 +8,13 @@
 
 var gloBoard; // the game board
 var myMove; // is it the user's turn? (bool)
+var userFirst;
 
 $(document).ready(function() {
 	myMove = true; // user always gets the first move in the first game
+	userFirst = true; // used for playAgain
 
-	//create an empty board
-	board = new Array();
-	board[0] = new Array();
-	board[1] = new Array();
-	board[2] = new Array();
-
-	for (i = 0; i < 3; i++)
-		for (j=0;j<3;j++)
-			board[i][j] = 'E';
+	board = emptyBoard();
 
 	drawBoard(board,myMove);
 
@@ -30,81 +24,27 @@ $(document).ready(function() {
 });
 
 function emptyBoard() {
+	board = new Array();
+	board[0] = new Array();
+	board[1] = new Array();
+	board[2] = new Array();
 
+	for (i = 0; i < 3; i++)
+		for (j=0;j<3;j++)
+			board[i][j] = 'E';
+
+	return board;
 }
 
-
-/*function getBoard() {
-	var xmlhttp;
-
-	if (window.XMLHttpRequest) // code for IE7+, Firefox, Chrome, Opera, Safari
-		xmlhttp=new XMLHttpRequest();
-
-	else // code for IE6, IE5
-		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-
-	xmlhttp.onreadystatechange=function() {
-		if (xmlhttp.readyState==4 && xmlhttp.status==200)
-		{
-			if (xmlhttp.responseText == 'error') {
-				console.log('got error in getBoard');
-				return;
-			}
-			else {
-				console.log(xmlhttp.responseText);
-				var array = $.parseJSON(xmlhttp.responseText);
-
-				console.log(array);
-
-				var board = array["board"];
-
-				var winner = array["winner"];
-
-				if (winner!=null) {
-					window.clearInterval(timer);
-
-				//	var playAgainStr = '<h3><a href="/common/playAgain.php?gid=' + gid + '">Play Again</a></h3>';
-					var playAgainStr = ' ';	
-					if (winner == uid)
-						$("#turnIndicator").html("<h3>You won!</h3>" + playAgainStr);
-					else if (winner == 0)
-						$("#turnIndicator").html("<h3>Cat's game</h3>" + playAgainStr);
-					else
-						$("#turnIndicator").html("<h3>You lost</h3><img src='/i/badman.jpg'>" + playAgainStr);
-					drawBoard(board,false);
-					return;
-			
-				}
-
-				gloBoard = array["board"]; // save last board 
-				var turn = array["turn"];
-
-				if (turn == uid) {
-					myMove = true;
-					$("#turnIndicator").html("<h3>Your move!</h3>");
-				}
-				else {
-					myMove = false;
-					$("#turnIndicator").html("<p>Opponent's turn</p>");
-				}
-			
-	
-				drawBoard(board,myMove);
-			}
-		}
-	}
-
-	var requestStr = "/common/getBoard.php?gid=" + gid;
-
-	xmlhttp.open("GET",requestStr,true);
-	xmlhttp.send();
-}*/
-
+/*
+ * x = -1, y = -1 specifies the computer is making the first move
+ */
 function makeMove(x,y) {
 	var xmlhttp;
 
 	myMove = false; // go ahead and set this to false; if there was an error it will be changed back next time getBoard() is called
-	drawBoard(gloBoard, false);
+	$("#turnIndicator").html("<h3>Computer's move.</h3>");
+	drawBoard(addMove(gloBoard,x,y), false);
 
 	if (window.XMLHttpRequest) // code for IE7+, Firefox, Chrome, Opera, Safari
 		xmlhttp=new XMLHttpRequest();
@@ -124,21 +64,24 @@ function makeMove(x,y) {
 				gloBoard=responseArr['board'];
 				gameStatus = responseArr['status'];
 
+				var playAgainStr = '<button id="playAgain" type="button" onclick="playAgain()">Play Again!</button>';
+
 				if (gameStatus == 'computerWin') {
-					$("#turnIndicator").html("<h3>Computer wins.</h3>");
+					$("#turnIndicator").html("<h3>Computer wins.</h3>" + playAgainStr);
 					drawBoard(gloBoard,false);
 				}
 
 				else if (gameStatus == 'userWin') {
-					$("#turnIndicator").html("<h3>You win!</h3>");
+					$("#turnIndicator").html("<h3>You win!</h3>" + playAgainStr);
 					drawBoard(gloBoard,false);
 				}
 				else if (gameStatus == 'tie') {
-					$("#turnIndicator").html("<h3>Cat's game</h3>");
+					$("#turnIndicator").html("<h3>Cat's game</h3>" + playAgainStr);
 					drawBoard(gloBoard,false);
 				}
 				else {
 					myMove = true;
+					$("#turnIndicator").html("<h3>Your turn!</h3>");
 					drawBoard(gloBoard,myMove);
 				}
 				return;
@@ -218,7 +161,43 @@ function drawBoard(arr, isMyMove) {
 	$('#gameBoard').html(html);	
 }
 
-function playAgain(computerFirst) {
-	
+
+
+function playAgain() {
+	if ($("#playerAlwaysFirst").prop("checked"))
+		userFirst = true;
+	else
+		userFirst = !userFirst;
+
+	myTurn = userFirst;
+
+	gloBoard = emptyBoard();
+
+	if (myTurn) {
+		drawBoard(gloBoard,myTurn);
+		$("#turnIndicator").html("<h3>Your move!</h3>");
+	}
+	else {
+		$("#turnIndicator").html("<h3>Computer's turn.</h3>");
+		makeMove(-1,-1);
+	}
+}
+
+function addMove(board,x,y) {
+	if (x < 0 || y < 0)
+		return board;
+
+	var clone = new Array();
+	clone[0] = new Array();
+	clone[1] = new Array();
+	clone[2] = new Array();
+
+	for (var i=0; i<3; i++)
+		for (var j=0;j<3;j++)
+			clone[i][j] = board[i][j];
+			
+
+	clone[x][y] = 'X';
+	return clone;
 }
 

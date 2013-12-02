@@ -8,10 +8,9 @@ if (!isset($_REQUEST['diff']))
 	$diff = 'easy';
 
 
-if ($_REQUEST['diff'] != 'hard' && $_REQUEST['diff'] != 'medium') {
+if ($_REQUEST['diff'] != 'hard' && $_REQUEST['diff'] != 'medium') 
 	$diff = 'easy';
-	$diffStr = "Easy";
-}
+
 else 
 	$diff = $_REQUEST['diff'];
 
@@ -35,5 +34,6 @@ echo '<!DOCTYPE HTML>
 <p>Difficulty: ' . ucfirst($diff) . '
 <div id="turnIndicator"></div>
 <div id="gameBoard"></div>
+<input type="checkbox" id="playerAlwaysFirst">Player always goes first</input>
 </body>
 </html>';
