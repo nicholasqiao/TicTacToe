@@ -157,14 +157,18 @@ class GameBoard
 		$finishStatus = GameBoard::checkIfFinalMove($stateStr,$row,$col,$mark);
 
 		if ($finishStatus == 'win')  {
-			User::recordWin($uid);
-			User::recordLoss($nextTurn);
+			if($info['ranked']) {
+				User::recordWin($uid);
+				User::recordLoss($nextTurn);
+			}
 			Game::finish($gid,$uid);
 			return Game::updateState($gid,$stateStr,$nextTurn);
 		}	
 		if ($finishStatus == 'tie') {
-			User::recordTie($uid);
-			User::recordTie($nextTurn);
+			if($info['ranked']) {
+				User::recordTie($uid);
+				User::recordTie($nextTurn);
+			}
 			Game::finish($gid,0);
 			return Game::updateState($gid,$stateStr,$nextTurn);
 		}

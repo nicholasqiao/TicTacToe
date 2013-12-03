@@ -156,11 +156,12 @@ class Game
 	 *
 	 * $array['uid_one'] => 1
 	 * $array['uid_two'] => 4
+	 * $array['ranked'] => true/false
  	 * 
 	 * but can be expanded to include more info if necessary
 	 */
 	public static function info($gid) {
-		$sql = "select uid_one, uid_two
+		$sql = "select uid_one, uid_two, ranked
 			from current_games
 			where gid = :gid";
 

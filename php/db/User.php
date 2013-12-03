@@ -185,40 +185,7 @@ class User
 		}
 		
 	}
-
-	/*
-	 * The user won,lost,tied a game 
- 	 * Returns true for successful update
-	 *
-	public function gameResult($str) {
-		if ( strcmp($str,"win") && strcmp($str,"loss") && strcmp($str,"tie") ) {
-			error("Invalid game result specified: " . $str);
-			return false;
-		}
-
-		$sql =  "update users
-		      set " . $str . " = " . $str . "+1 
-		      where uid = :uid";
-
-		if ($stmt = $GLOBALS['db']->prepare($sql)) {
-			$stmt -> bindParam(":uid", $this->uid, PDO::PARAM_INT);
-
-			if (!Model::execute($stmt, "wonGame()")) {
-					return false;
-			}
-			else
-				return true;
-		}
-		else {
-			error("Database error in wonGame()");
-			return false;
-		}
-	} */
-
-	/*  Initialize the user's email
-	 *  Seems handy to have this available at all times so we go ahead
-	 * and populate this field every time we make a new user.
-	 */
+	
 	private function queryEmail() {
 		$sql = "select username from users
 			where uid = :uid";
@@ -524,5 +491,82 @@ class User
 		}
 		
 	}
+
+	/* 
+	 * friend list stuff
+ 	 */
+
+	// return false for error
+	public function addFriend($friend) {
+		$sql = 'insert into friendlist
+				(uid
+				,friend)
+			values
+				(:uid
+				,:friend)';
+
+		if ($stmt = $GLOBALS['db']->prepare($sql)) {
+			$stmt->bindParam('uid',$this->uid,PDO::PARAM_INT);
+			$stmt->bindParam('friend',$friend,PDO::PARAM_INT);
+
+			if (Model::execute($stmt,"User->addFriend")) {
+				return true;
+			}
+			else {
+				error("DB error User->addFriend");
+				return false;
+			}
+		}
+		else 
+			return false;
+	}
+
+	// return false for error
+	public function delFriend($friend) {
+		$sql = 'delete from friendlist
+			where    uid = :uid
+			  and friend = :friend';
+
+		if ($stmt = $GLOBALS['db']->prepare($sql)) {
+			$stmt->bindParam('uid',$this->uid,PDO::PARAM_INT);
+			$stmt->bindParam('friend',$friend,PDO::PARAM_INT);
+
+			if (Model::execute($stmt,"User->delFriend")) {
+				return true;
+			}
+			else {
+				error("DB error User->delFriend");
+				return false;
+			}
+		}
+		else 
+			return false;
+	}
+
+	// get friends list, return null for none or error
+	public function friends() {
+		$sql = 'select friend 
+			from friendlist
+			where uid = :uid';
+
+		if ($stmt = $GLOBALS['db']->prepare($sql)) {
+			$stmt->bindParam('uid',$this->uid,PDO::PARAM_INT);
+
+			if (Model::execute($stmt,"User->friends")) {
+				if ($result = $stmt->fetchAll())
+					return $result;
+				else 
+					return null;
+			}
+			else {
+				error("DB error User->friends");
+				return null;
+			}
+		}
+		else 
+			return null;
+	}
+		
+			
 }
 
