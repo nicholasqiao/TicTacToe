@@ -30,6 +30,7 @@ create table current_games
     ,game_state varchar(100)
 	,turn int
 	,winner int default null
+	,ranked bool not null 
     /* ,game_status varchar(10) /* maybe something like PROG for in progress, OVER for over */
     );
 
@@ -51,7 +52,9 @@ create table achievements
 	,created timestamp default current_timestamp()
 	);
 /* combinations of achievement_id and uid are unique */
-create unique index active_reqs_users on active_reqs (uid,achievement_id);
+create unique index achievements_con on achievements (uid,achievement_id);
+
+delete from achievements;
 
 
 drop table if exists active_reqs;

@@ -24,25 +24,30 @@ class Game
 	/* 
 	 * Create a new game entry in the DB. Returns unique game_id or
 	 * -1 for error.
+	 *
+	 * $uid1 always makes first move
 	 */
-	public static function newGame($uid1,$uid2,$state) {
+	public static function newGame($uid1,$uid2,$state,$ranked) {
 	
 		// Try to insert a new game
 		$sql = "insert into current_games
 				(uid_one
 				,uid_two
 				,game_state
-				,turn)
+				,turn
+				,ranked)
 			values
 				(:uid1
 				,:uid2
 				,:state
-				,:uid1)";
+				,:uid1
+				,:ranked)";
 		
 		if ($stmt = $GLOBALS['db']->prepare($sql)) {
 			$stmt -> bindParam(":uid1", $uid1, PDO::PARAM_INT);
 			$stmt -> bindParam(":uid2", $uid2, PDO::PARAM_INT);
 			$stmt -> bindParam(":state", $state, PDO::PARAM_STR);
+			$stmt -> bindParam(":ranked", $ranked, PDO::PARAM_BOOL);
 
 			if (!Game::execute($stmt, "newGame() insert")) 
 				return -1;

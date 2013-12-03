@@ -17,7 +17,7 @@
     {
         $firstPlayer = Game::deQ();
         $gameState = "EEEEEEEEE";
-        $newGameId = Game::newGame($uid, $firstPlayer, $gameState);
+        $newGameId = Game::newGame($uid, $firstPlayer, $gameState, true);
         
         if ($newGameId == -1)
         {
@@ -26,8 +26,8 @@
         else
         {
             $_SESSION['gid'] = $newGameId;
-        }
-        Game::deQ();
+            Game::deQ();
 	    header('Location: ../play.php?gid=' . $newGameId);
+	}
     }
 ?>
