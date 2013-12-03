@@ -90,7 +90,7 @@ function getBoard() {
 function genBoard(arr, isMyMove) {
 	var xImage = '<img src="/i/x.png">';
 	var oImage = '<img src="/i/o.png">';
-	var eImage = '<a href="#"><img src="/i/e.png"></a>';
+	var eImage = '<img src="/i/e.png">';
 
 
 	// html is the string that holds the html for the table

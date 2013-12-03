@@ -8,7 +8,7 @@
         $uid2 = $_REQUEST['reqid'];
         
         $gameState = "EEEEEEEEE";
-        $newGameId = Game::newGame($uid, $uid2, $gameState);
+        $newGameId = Game::newGame($uid, $uid2, $gameState, false);
         
         Game::removeRequest($uid2, $uid);
         if ($newGameId == -1)
