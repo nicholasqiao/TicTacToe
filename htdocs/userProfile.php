@@ -85,12 +85,33 @@ echo '
 </table>
 ';
 
-echo '
-<table>
-<tr> <td colspan="2">Game Requests</td> </tr>
-<tr>
-	<td>Requests:</td><td>' . $formattedReq . '</td>
-</tr>
-</table>
-';
+
+echo '<script type="text/javascript">
+function acceptRequest()
+{
+ window.location = ../;
+}
+</script>';
+  
+if ($gameRequests != null)
+{
+$stringForTable = '<table>
+<tr> <td colspan="2">Game Requests-</td> </tr>';
+
+foreach ($gameRequests as $value)
+{
+    $curRequester = $value['requester'];
+    $curUN = $value['username'];
+    
+    $tempStr = '<tr><td><button type="button" onclick="location=\'./common/acceptRequest.php?reqid=' . $curRequester . '\'">' . $curUN . '</button></td></tr>';
+    $stringForTable = $stringForTable . $tempStr;
+}
+
+$stringForTable = $stringForTable . '</table>';
+echo $stringForTable;
+}
+else
+{
+    echo 'No Game Requests :(';
+}
 
