@@ -43,6 +43,7 @@ create table friendlist
      ,uid int
      ,friend int
 	);
+create unique index friendlist_constraint on friendlist (uid,friend);
 
 drop table if exists achievements;
 create table achievements

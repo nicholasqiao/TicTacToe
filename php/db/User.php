@@ -545,9 +545,11 @@ class User
 
 	// get friends list, return null for none or error
 	public function friends() {
-		$sql = 'select friend 
-			from friendlist
-			where uid = :uid';
+		$sql = 'select f.friend "uid"
+	  		      ,u.username
+			from friendlist f
+			join users u on f.friend = u.uid
+			where f.uid = 4';
 
 		if ($stmt = $GLOBALS['db']->prepare($sql)) {
 			$stmt->bindParam('uid',$this->uid,PDO::PARAM_INT);
