@@ -113,4 +113,10 @@ echo '<!DOCTYPE HTML>
       <h3> ' . $myEmail . ' vs. ' . $oppEmail . '</h3>
       <div id="turnIndicator"></div>
       <div id="gameBoard"></div>';
+      
+      if (!isset($_REQUEST['friend']))
+      {
+            echo '<button type="button" onclick="location=\'./common/addFriend.php?reqid=' . $opp_uid . '\'">Add to friends list</button>';
+      }
+      
 	
