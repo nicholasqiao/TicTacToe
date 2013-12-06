@@ -56,6 +56,7 @@ $email = $user->getEmail();
 $stats = $user->getStats(); // stats is an array
 $gameRequests = $user->getRequests();
 $friendList = $user->friends();
+//echo JSON_encode($friendList);
 $formattedReq = JSON_encode($gameRequests);
 //$achievements = $user->getAchievements(); // achievements functionality to be implemented
 
@@ -124,9 +125,10 @@ $stringForFL = '<table>
 
 foreach ($friendList as $f)
 {
-    $curFriend = $f['friend'];
+    $curFriendUid = $f['uid'];
+    $curFriendUN = $f['username'];
     
-    $tempStr = '<tr><td>Friend: ' . $curFriend . '        <button type="button" onclick="location=\'./common/sendGameRequest.php?reqid=' . $curFriend . '\'"> Send Game Request </button><button type="button" onclick="location=\'./common/removeFriend.php?reqid=' . $curFriend . '\'"> Remove friend </button></td></tr>';
+    $tempStr = '<tr><td>Friend: ' . $curFriendUN . '        <button type="button" onclick="location=\'./common/sendGameRequest.php?reqid=' . $curFriendUid . '\'"> Send Game Request </button><button type="button" onclick="location=\'./common/removeFriend.php?reqid=' . $curFriendUid . '\'"> Remove friend </button></td></tr>';
     $stringForFL = $stringForFL . $tempStr;
 }
 

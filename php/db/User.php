@@ -549,7 +549,7 @@ class User
 	  		      ,u.username
 			from friendlist f
 			join users u on f.friend = u.uid
-			where f.uid = 4';
+			where f.uid =' . $this->uid;
 
 		if ($stmt = $GLOBALS['db']->prepare($sql)) {
 			$stmt->bindParam('uid',$this->uid,PDO::PARAM_INT);

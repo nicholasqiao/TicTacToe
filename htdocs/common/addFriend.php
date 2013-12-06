@@ -11,6 +11,6 @@
     }
     else
     {
-        echo '<!DOCTYPE HTML><html><head><title>Friend added!</title></head><body> Friend Added <a href="../play.php?gid=' . $curGame . '">Go Back</a></body></html>';
+        echo '<!DOCTYPE HTML><html><head><title>Error</title></head><body> Error Adding Friend <a href="../play.php?gid=' . $curGame . '">Go Back</a></body></html>';
     }
 ?>
