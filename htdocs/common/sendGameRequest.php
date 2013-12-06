@@ -7,19 +7,15 @@
         $uid = $_SESSION['uid'];
         $uid2 = $_REQUEST['reqid'];
         
-        $gameState = "EEEEEEEEE";
-        $newGameId = Game::newGame($uid, $uid2, $gameState, false);
-        
-        Game::removeRequest($uid2, $uid);
-        if ($newGameId == -1)
+        $req = Game::gameRequest($uid, $uid2);
+        if ($req == false)
         {
             echo '<!DOCTYPE HTML><html><head><title>Error</title></head><body>An error has occured with the game request <a href="../userProfile.php">Go Back</a></body></html>';
         }
         else
         {
-            $_SESSION['gid'] = $newGameId;
+            echo '<!DOCTYPE HTML><html><head><title>Success</title></head><body>You have sent a game invite. When accepted, simply join the search queue to instantly get into the game that was accepted.<a href="../userProfile.php">Go Back</a></body></html>';
         }
-        header('Location: ../play.php?gid=' . $newGameId);
     }
     else 
     {

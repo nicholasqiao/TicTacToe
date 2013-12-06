@@ -55,6 +55,7 @@ catch (NotFoundException $e) {
 $email = $user->getEmail();
 $stats = $user->getStats(); // stats is an array
 $gameRequests = $user->getRequests();
+$friendList = $user->friends();
 $formattedReq = JSON_encode($gameRequests);
 //$achievements = $user->getAchievements(); // achievements functionality to be implemented
 
@@ -112,6 +113,27 @@ echo $stringForTable;
 }
 else
 {
-    echo 'No Game Requests :(';
+    echo '<br>No Game Requests';
 }
 
+echo '<br><br><br>';
+if ($friendList != null)
+{
+$stringForFL = '<table>
+<tr> <td colspan="2">Game Requests-</td> </tr>';
+
+foreach ($friendList as $f)
+{
+    $curFriend = $f['friend'];
+    
+    $tempStr = '<tr><td>Friend: ' . $curFriend . '        <button type="button" onclick="location=\'./common/sendGameRequest.php?reqid=' . $curFriend . '\'"> Send Game Request </button><button type="button" onclick="location=\'./common/removeFriend.php?reqid=' . $curFriend . '\'"> Remove friend </button></td></tr>';
+    $stringForFL = $stringForFL . $tempStr;
+}
+
+$stringForFL = $stringForFL . '</table>';
+echo $stringForFL;
+}
+else
+{
+    echo 'You have no friends :(';
+}
