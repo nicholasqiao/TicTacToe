@@ -98,6 +98,7 @@ echo '<!DOCTYPE HTML>
       <script>
 	myMove = ' . $myMove . ';
 	uid = ' . $uid . ';
+	opponentUid = ' . $opp_uid . ';
 	gid = ' . $gid . ';
 	window.onload = function (e) {
 		getBoard();
@@ -114,6 +115,7 @@ echo '<!DOCTYPE HTML>
       <h3> ' . $myEmail . ' vs. ' . $oppEmail . '</h3>
       <div id="turnIndicator"></div>
       <div id="gameBoard"></div>
+      <div id="timeIndicator"></div>
       <button type="button" id="resign" onclick="resign()">Resign</button>';
       
       if (!isset($_REQUEST['friend']))

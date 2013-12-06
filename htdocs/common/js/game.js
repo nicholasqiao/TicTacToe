@@ -4,10 +4,25 @@
  * JavaScript functions relating to the game board
  */
 
+// this variable determines how long (in seconds) each user has to make a move
+var timeout = 10;
+
 var myMove;
 var uid; //TODO javascript may have direct access to session variables, idk
+var opponentUid;
 var timer;
+
+
+var opponentMoveTimer;
+var opponentTimeRemaining;
+var opponentTimerFlag = false;
+
+var myMoveTimer;
+var myTimeReamining;
+var myTimerFlag = false;
+
 var gloBoard;
+
 
 /*
  * Returns gameBoard array
@@ -40,6 +55,10 @@ function getBoard() {
 
 				if (winner!=null) {
 					window.clearInterval(timer);
+					window.clearInterval(opponentMoveTimer);
+					window.clearInterval(myMoveTimer);
+
+					$("#resign").hide();
 
 				//	var playAgainStr = '<h3><a href="/common/playAgain.php?gid=' + gid + '">Play Again</a></h3>';
 					var playAgainStr = ' ';	
@@ -60,10 +79,18 @@ function getBoard() {
 				if (turn == uid) {
 					myMove = true;
 					$("#turnIndicator").html("<h3>Your move!</h3>");
+					if (opponentTimerFlag) 
+						stopOpponentTimer();
+					if (!myTimerFlag)
+						startMyTimer();
 				}
 				else {
 					myMove = false;
 					$("#turnIndicator").html("<p>Opponent's turn</p>");
+					if (myTimerFlag)
+						stopMyTimer();
+					if (!opponentTimerFlag)
+						startOpponentTimer();
 				}
 			
 	
@@ -76,6 +103,52 @@ function getBoard() {
 
 	xmlhttp.open("GET",requestStr,true);
 	xmlhttp.send();
+}
+
+function startOpponentTimer() {
+	opponentTimerFlag = true;
+	opponentTimeRemaining = timeout;
+	opponentMoveTimer = window.setInterval(opponentTimerTick, 1000);
+}
+
+function stopOpponentTimer() {
+	opponentTimerFlag = false;
+	window.clearInterval(opponentMoveTimer);
+	$("#timeIndicator").html("");
+}
+
+function opponentTimerTick() {
+	opponentTimeRemaining -= 1;
+	if (opponentTimeRemaining <= 0) {
+		submitResign(opponentUid);
+		window.clearInterval(opponentMoveTimer);
+		$("#timeIndicator").html("<p>Your opponent timed out.</p>");
+	}
+	else 
+		$("#timeIndicator").html("<p>Your opponent has " + opponentTimeRemaining + " seconds to make a move.</p>");
+}
+
+function startMyTimer() {
+	myTimerFlag = true;
+	myTimeRemaining = timeout;
+	myMoveTimer = window.setInterval(myTimerTick, 1000);
+}
+
+function stopMyTimer() {
+	myTimerFlag = false;
+	window.clearInterval(myMoveTimer);
+	$("#timeIndicator").html();
+}
+
+function myTimerTick() {
+	myTimeRemaining -= 1;
+	if (myTimeRemaining <= 0) {
+		submitResign(uid);
+		window.clearInterval(myMoveTimer);
+		$("#timeIndicator").html("<p>You timed out.</p>");
+	}
+	else 
+		$("#timeIndicator").html("<p>You have " + myTimeRemaining + " seconds to make a move.</p>");
 }
 
 /*
@@ -179,14 +252,14 @@ function resign() {
 		return;
 
 	
-	submitResign();
+	submitResign(uid);
  	
 }
 
 /*
  * Submit resignation helper method
  */
-function submitResign() {
+function submitResign(resignUid) {
 	var xmlhttp;
 
 	if (window.XMLHttpRequest) // code for IE7+, Firefox, Chrome, Opera, Safari
@@ -211,10 +284,12 @@ function submitResign() {
 	}
 
 	
-	var requestStr = "/common/resign.php?gid= " + gid + "&uid= " + uid;
+	var requestStr = "/common/resign.php?gid= " + gid + "&uid= " + resignUid;
 
 	xmlhttp.open("GET",requestStr,true);
 	xmlhttp.send();
 }
+
+
 
 

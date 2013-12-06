@@ -161,7 +161,7 @@ class Game
 	 * but can be expanded to include more info if necessary
 	 */
 	public static function info($gid) {
-		$sql = "select uid_one, uid_two, ranked
+		$sql = "select uid_one, uid_two, ranked, winner
 			from current_games
 			where gid = :gid";
 

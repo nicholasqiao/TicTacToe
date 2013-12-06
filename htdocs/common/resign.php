@@ -23,6 +23,9 @@ $gid = $_REQUEST['gid'];
 
 $info = Game::info($gid);
 
+if (!is_null($info['winner']))
+	exit(0);
+
 if ($info['uid_one'] == $resignUid)
 	$winner = $info['uid_two'];
 else if ($info['uid_two'] == $resignUid)
