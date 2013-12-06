@@ -110,9 +110,11 @@ echo '<!DOCTYPE HTML>
       </script>
       </head>
       <body>
+      <p><a href="/main.html">Home</a><p>
       <h3> ' . $myEmail . ' vs. ' . $oppEmail . '</h3>
       <div id="turnIndicator"></div>
-      <div id="gameBoard"></div>';
+      <div id="gameBoard"></div>
+      <button type="button" id="resign" onclick="resign()">Resign</button>';
       
       if (!isset($_REQUEST['friend']))
       {

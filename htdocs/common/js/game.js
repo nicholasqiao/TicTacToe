@@ -171,4 +171,50 @@ function makeMove(x,y) {
 	xmlhttp.send();
 }
 
+/* 
+ * function attached to Resign button
+ */
+function resign() {
+	if(!confirm('Are you sure you want to resign?'))
+		return;
+
+	
+	submitResign();
+ 	
+}
+
+/*
+ * Submit resignation helper method
+ */
+function submitResign() {
+	var xmlhttp;
+
+	if (window.XMLHttpRequest) // code for IE7+, Firefox, Chrome, Opera, Safari
+		xmlhttp=new XMLHttpRequest();
+
+	else // code for IE6, IE5
+		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+
+	xmlhttp.onreadystatechange=function() {
+		if (xmlhttp.readyState==4 && xmlhttp.status==200)
+		{
+
+
+			if (xmlhttp.responseText == 'error') {
+				console.log('got error in resign');
+				return;
+			}
+			else {
+				getBoard();	
+			}
+		}
+	}
+
+	
+	var requestStr = "/common/resign.php?gid= " + gid + "&uid= " + uid;
+
+	xmlhttp.open("GET",requestStr,true);
+	xmlhttp.send();
+}
+
 
