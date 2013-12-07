@@ -365,7 +365,7 @@ class User
 	  		      ,u.username
 	  		from active_reqs a 
 			join users u on a.requester = u.uid
-			where a.requested = ' . $this->uid .';';
+			where a.requested = :uid';
             
             if ($stmt = $GLOBALS['db']->prepare($sql)) {
 			$stmt->bindParam('uid',$this->uid,PDO::PARAM_INT);
@@ -568,6 +568,125 @@ class User
 		else 
 			return null;
 	}
+
+	/*
+	 * generates forgot password token, returns the random token.
+	 */
+	public static function forgotPass($uid) {
+		$randomStr = User::randomStr();
+		
+		$sql = "update users
+			set forgotpass = :str
+			where uid = :uid";
+
+		if ($stmt = $GLOBALS['db']->prepare($sql)) {
+			$stmt->bindParam('uid',$uid,PDO::PARAM_INT);
+			$stmt->bindParam('str',$randomStr,PDO::PARAM_STR);
+
+			if (Model::execute($stmt,"User::forgotPass")) 
+					return $randomStr;
+				else 
+					return null;
+		}
+		else 
+			return null;
+
+
+
+	}
+
+	/* 
+	 * random string generate helper function, returns 16-char random str
+	 */
+	private function randomStr() {
+		$chars='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+		$str = '';
+
+		for ($i=0;$i<16;$i++) 
+			$str .= $chars[rand(0,51)];
+
+		return $str;
+	}
+
+	/* returns uid for given username or null  if none exists */
+	public static function usernameToUid($username) {
+		// Check if username is taken.
+		$sql = "select uid from users
+			 where username = :username";
+
+		if ($stmt = $GLOBALS['db']->prepare($sql)) {
+			$stmt -> bindParam(":username", $username, PDO::PARAM_STR);
+			if (Model::execute($stmt, "usernameToUid")) {
+				if($result = $stmt->fetch())
+					return $result['uid'];
+				else return null;
+			}	
+			else
+				return null;
+		}
+		else {
+			error("Database error in usernameToUid");
+			return null;
+		}	
+	}
+
+	/* returns true or false */
+	public static function verifyResetToken($uid, $token) {
+		$sql = "select count(*) from users
+			where uid = :uid
+			and forgotpass = :token";
+		
+
+		if ($stmt = $GLOBALS['db']->prepare($sql)) {
+			$stmt -> bindParam(":uid", $uid, PDO::PARAM_INT);
+			$stmt -> bindParam(":token", $token, PDO::PARAM_STR);
+			if (Model::execute($stmt, "verifyResetToken")) {
+				$result = $stmt->fetch();
+				if ($result[0] > 0)
+					return true;
+			}
+			else
+				return false;
+		}
+		else {
+			error("Database error in verifyResetToken");
+			return null;
+		}
+
+		
+
+		
+	}
+
+	/* returns false for bad token or error */
+	public static function updatePass($uid, $pass, $token) {
+		if(!User::verifyResetToken($uid, $token)) {
+			return false;
+		}
+
+		$hashpwd = sha1($pass);
+	
+		$sql = "update users
+			set pass = :hashpwd
+			where uid = :uid";
+
+		if ($stmt = $GLOBALS['db']->prepare($sql)) {
+			$stmt -> bindParam(":uid", $uid, PDO::PARAM_INT);
+			$stmt -> bindParam(":hashpwd", $hashpwd, PDO::PARAM_STR);
+			if (Model::execute($stmt, "updatepass")) {
+					return true;
+			}
+			else
+				return false;
+		}
+		else {
+			error("Database error in updatePass");
+
+			return false;
+		}
+
+		
+	}	
 		
 			
 }
