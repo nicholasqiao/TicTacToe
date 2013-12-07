@@ -58,7 +58,7 @@ $gameRequests = $user->getRequests();
 $friendList = $user->friends();
 //echo JSON_encode($friendList);
 $formattedReq = JSON_encode($gameRequests);
-//$achievements = $user->getAchievements(); // achievements functionality to be implemented
+$achievements = $user->achievements();
 
 
 echo '
@@ -71,7 +71,8 @@ echo '
 <h1>User ' . $email . '</h1>';
 
 if (!$user_is_me)
-	echo '<p><a href="#">Challenge!</a></p>';
+	echo '<button type="button" onclick="location=\'./common/sendGameRequest.php?reqid=' . $userid . '\'"> Send Game Request </button>';
+
 
 echo '
 <table>
@@ -86,6 +87,8 @@ echo '
 </tr>
 </table>
 ';
+
+echo '<p><a href="/leaderboard.php">View Leaderboard</a></p>';
 
 
 echo '<script type="text/javascript">
@@ -139,3 +142,15 @@ else
 {
     echo 'You have no friends :(';
 }
+
+echo '<h3>Achievements</h3>';
+
+$achievementsTable = "<ul>";
+
+foreach($achievements as $row) {
+	$achievementsTable .= "<li>" . $row['txt'] . "</li>";
+}
+
+$achievementsTable .= "</ul>";
+
+echo $achievementsTable;

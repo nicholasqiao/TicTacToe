@@ -210,10 +210,13 @@ class Game
 	public static function getLeaderboard() {
 		$sql = 'select 
 				username
+				,uid
 				,win 
 				,loss 
+				,tie
 				,coalesce( (win/loss), 0) "ratio" 
 			from users
+			where (win+loss+tie)>10
 		        order by ratio desc
 			limit 10';
 
@@ -221,14 +224,18 @@ class Game
 		if ($stmt = $GLOBALS['db']->prepare($sql)) {
 			$stmt->bindParam("uid",$uid, PDO::PARAM_INT);
 			if (Game::execute($stmt,"getLeaderboard()")) 
-				return true;
+				if ($result = $stmt->fetchAll())
+					return $result;
+				else
+					return null;
+				 
 			
 			else 
-				return false;
+				return null;
 		}
 		else {
 			error("Database error in getLeaderboard()");
-			return false;
+			return null;
 		}
 
 		
